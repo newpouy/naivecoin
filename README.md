@@ -70,7 +70,7 @@ docker ps
 docker kill <container id or name>
 ```
 ```
-docker attach <container id or name>
+docker exec -it <container id or name> bash 
 ```
 docker rm <container id or name>
 ```
