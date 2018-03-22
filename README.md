@@ -50,3 +50,15 @@ curl -H "Content-type:application/json" --data '{"peer" : "ws://localhost:6001"}
 ```
 curl http://localhost:3001/peers
 ```
+
+
+### docker 
+docker build --tag node-naivecoin:test .
+docker run --name node-naivecoin-instance -p 3003:3003 node-naivecoin:test
+(port customizing)
+
+docker images
+docker ps
+docker kill <container id or name>
+docker attach <container id or name>
+docker rm <container id or name>
