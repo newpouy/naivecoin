@@ -23,16 +23,23 @@ class Message {
 }
 
 const initP2PServer = (p2pPort: number) => {
+    console.log('initP2PServer')
     const server: Server = new WebSocket.Server({port: p2pPort});
+    console.log('ws server')
     server.on('connection', (ws: WebSocket) => {
+        console.log('server.on')
         initConnection(ws);
     });
+    server.on('open', () => {
+        console.log('open')
+    })
     console.log('listening websocket p2p port on: ' + p2pPort);
 };
 
 const getSockets = () => sockets;
 
 const initConnection = (ws: WebSocket) => {
+    console.log('init')
     sockets.push(ws);
     initMessageHandler(ws);
     initErrorHandler(ws);
@@ -40,6 +47,7 @@ const initConnection = (ws: WebSocket) => {
 
     // query transactions pool only some time after chain query
     setTimeout(() => {
+        console.log('broadcasting')
         broadcast(queryTransactionPoolMsg());
     }, 500);
 };

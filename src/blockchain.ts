@@ -40,7 +40,7 @@ const genesisTransaction = {
 };
 
 const genesisBlock: Block = new Block(
-    0, '91a73664bc84c0baa1fc75ea6e4aa6d1d20c5df664c724e3159aefc2e1186627', '', 1465154705, [genesisTransaction], 0, 0
+    0, '91a73664bc84c0baa1fc75ea6e4aa6d1d20c5df664c724e3159aefc2e1186627', '', 1465154705, [genesisTransaction], 10, 0
 );
 
 let blockchain: Block[] = [genesisBlock];
@@ -91,6 +91,7 @@ const getAdjustedDifficulty = (latestBlock: Block, aBlockchain: Block[]) => {
 const getCurrentTimestamp = (): number => Math.round(new Date().getTime() / 1000);
 
 const generateRawNextBlock = (blockData: Transaction[]) => {
+    console.log('generateRawNextBlock')
     const previousBlock: Block = getLatestBlock();
     const difficulty: number = getDifficulty(getBlockchain());
     const nextIndex: number = previousBlock.index + 1;
@@ -117,6 +118,7 @@ const generateNextBlock = () => {
 };
 
 const generatenextBlockWithTransaction = (receiverAddress: string, amount: number) => {
+    console.log('generatenextBlockWithTransaction');
     if (!isValidAddress(receiverAddress)) {
         throw Error('invalid address');
     }
@@ -133,7 +135,9 @@ const findBlock = (index: number, previousHash: string, timestamp: number, data:
     let nonce = 0;
     while (true) {
         const hash: string = calculateHash(index, previousHash, timestamp, data, difficulty, nonce);
+        // console.log("caculated hash is...."+hash)
         if (hashMatchesDifficulty(hash, difficulty)) {
+            console.log("!!!!!!!!!!!!!!!!!! difficult as much as "+difficulty+" problem has been Solved!!!!!!!!!!!!!!!!!!!!!!")
             return new Block(index, hash, previousHash, timestamp, data, difficulty, nonce);
         }
         nonce++;
@@ -154,9 +158,11 @@ const sendTransaction = (address: string, amount: number): Transaction => {
 const calculateHashForBlock = (block: Block): string =>
     calculateHash(block.index, block.previousHash, block.timestamp, block.data, block.difficulty, block.nonce);
 
-const calculateHash = (index: number, previousHash: string, timestamp: number, data: Transaction[],
-                       difficulty: number, nonce: number): string =>
-    CryptoJS.SHA256(index + previousHash + timestamp + data + difficulty + nonce).toString();
+const calculateHash = (index: number, previousHash: string, timestamp: number, data: Transaction[], difficulty: number, nonce: number): string => {
+    console.log("calculating with  "+nonce+".......")
+    return CryptoJS.SHA256(index + previousHash + timestamp + data + difficulty + nonce).toString();
+
+};
 
 const isValidBlockStructure = (block: Block): boolean => {
     return typeof block.index === 'number'
@@ -219,6 +225,7 @@ const hashMatchesBlockContent = (block: Block): boolean => {
 const hashMatchesDifficulty = (hash: string, difficulty: number): boolean => {
     const hashInBinary: string = hexToBinary(hash);
     const requiredPrefix: string = '0'.repeat(difficulty);
+    console.log('binary: '+hashInBinary)
     return hashInBinary.startsWith(requiredPrefix);
 };
 

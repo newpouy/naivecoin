@@ -57,7 +57,7 @@ curl http://localhost:3001/peers
 docker build --tag node-naivecoin:test .
 ```
 ```
-docker run --name node-naivecoin-instance -p 3003:3003 node-naivecoin:test
+docker run --name node-naivecoin-instance -p 3003:3001 node-naivecoin:test
 (port customizing)
 ```
 ```

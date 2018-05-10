@@ -10,7 +10,7 @@ import {UnspentTxOut} from './transaction';
 import {getTransactionPool} from './transactionPool';
 import {getPublicFromWallet, initWallet} from './wallet';
 
-const httpPort: number = parseInt(process.env.HTTP_PORT) || 3002;
+const httpPort: number = parseInt(process.env.HTTP_PORT) || 3001;
 const p2pPort: number = parseInt(process.env.P2P_PORT) || 6001;
 
 const initHttpServer = (myHttpPort: number) => {
@@ -122,6 +122,7 @@ const initHttpServer = (myHttpPort: number) => {
         res.send(getSockets().map((s: any) => s._socket.remoteAddress + ':' + s._socket.remotePort));
     });
     app.post('/addPeer', (req, res) => {
+        console.log(req.body)
         connectToPeers(req.body.peer);
         res.send();
     });
